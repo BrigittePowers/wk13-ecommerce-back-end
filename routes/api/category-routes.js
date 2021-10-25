@@ -3,26 +3,77 @@ const { Category, Product } = require('../../models');
 
 // The `/api/categories` endpoint
 
-router.get('/', (req, res) => {
-  // find all categories
-  // be sure to include its associated Products
+// GET all categories, include assc. products
+router.get('/', async (req, res) => {
+  const categoryData = await Category.findAll(
+    {
+      include: {
+        model: Product,
+        attributes: ['product_name']
+      }
+    }
+  )
+  .catch((err) => {
+    res.status(500).json(err);
+  });
+  res.json(categoryData);
 });
 
-router.get('/:id', (req, res) => {
-  // find one category by its `id` value
-  // be sure to include its associated Products
+// GET category by id, include assc. products
+router.get('/:id', async (req, res) => {
+  const categoryDataById = await Category.findOne({
+    where: {
+      id: req.params.id
+    },
+    include: {
+      model: Product,
+      attributes: ['category_id']
+    }
+  })
+  .catch((err) => {
+    res.status(500).json(err);
+  });
+  res.json(categoryDataById);
 });
 
-router.post('/', (req, res) => {
-  // create a new category
+// POST new category
+router.post('/', async (req, res) => {
+  const newCategory = await Category.create({
+    category_name: req.body.category_name
+  })
+  .catch((err) => {
+    res.status(500).json(err);
+  })
+  res.json(newCategory);
 });
 
-router.put('/:id', (req, res) => {
-  // update a category by its `id` value
+// PUT update category by ID
+router.put('/:id', async (req, res) => {
+  const updateCategory = await Category.update({
+    category_name: req.body.category_name
+  },
+  {
+    where: {
+      id: req.params.id
+    }
+  })
+  .catch((err) => {
+    res.status(500).json(err);
+  })
+  res.json(updateCategory);
 });
 
-router.delete('/:id', (req, res) => {
-  // delete a category by its `id` value
+// DELETE category by ID
+router.delete('/:id', async (req, res) => {
+  const deleteCategory = await Category.destroy({
+    where: {
+      id: req.params.id
+    }
+  })
+  .catch((err) => {
+    res.status(500).json(err);
+  })
+  res.json(deleteCategory);
 });
 
 module.exports = router;
