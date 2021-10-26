@@ -21,7 +21,6 @@ Product.init(
       allowNull: false,
       validate: {
         isDecimal: true,
-        msg: "Must include 2 decimal places [ex: 5.99]"
       }
     },
     stock: {
@@ -30,7 +29,6 @@ Product.init(
       defaultValue: 10,
       validate: {
         isNumeric: true,
-        msg: "Must be only numbers"
       }
     },
     category_id: {
