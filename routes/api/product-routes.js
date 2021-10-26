@@ -26,7 +26,7 @@ router.get('/', async (req, res) => {
 });
 
 // GET one product by id, incl assc category and tag data
-router.get('/:id', (req, res) => {
+router.get('/:id', async (req, res) => {
   const productDataById = await Product.findOne({
     where: {
       id: req.params.id
